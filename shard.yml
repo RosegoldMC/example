@@ -1,0 +1,17 @@
+name: rosegold-example
+version: 0.1.0
+
+authors:
+  - Your Name <your.email@example.com>
+
+targets:
+  attack:
+    main: src/attack.cr
+
+crystal: '>= 1.17.1'
+
+license: MIT
+
+dependencies:
+  rosegold:
+    github: RosegoldMC/rosegold.cr
