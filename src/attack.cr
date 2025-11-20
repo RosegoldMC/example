@@ -6,28 +6,54 @@ require "rosegold"
 SPECTATE_HOST = ENV.fetch "SPECTATE_HOST", "0.0.0.0"
 SPECTATE_PORT = ENV.fetch("SPECTATE_PORT", "25566").to_i
 
+# Autoreconnect configuration
+INITIAL_RETRY_DELAY = 5.seconds
+MAX_RETRY_DELAY     = 5.minutes
+
 spectate_server = Rosegold::SpectateServer.new(SPECTATE_HOST, SPECTATE_PORT)
 spectate_server.start
 
-client = Rosegold::Client.new "play.civmc.net"
-spectate_server.attach_client client
-bot = Rosegold::Bot.new(client)
+retry_delay = INITIAL_RETRY_DELAY
+durability = 0
 
-bot.join_game
-sleep 3.seconds
+# Infinite reconnection loop with exponential backoff
+loop do
+  begin
+    client = Rosegold::Client.new "play.civmc.net"
+    spectate_server.attach_client client
+    bot = Rosegold::Bot.new(client)
 
-look = bot.look
-durability = bot.main_hand.durability
+    bot.join_game
+    sleep 3.seconds
 
-while bot.connected?
-  bot.eat!
-  bot.look = look
-  bot.inventory.pick! "diamond_sword"
-  bot.attack
-  bot.wait_ticks 5
+    # Reset backoff on successful connection
+    retry_delay = INITIAL_RETRY_DELAY
+    puts "Connected successfully!"
 
-  if bot.main_hand.durability < durability
-    puts "Attacked! Durability decreased from #{durability} to #{bot.main_hand.durability}"
+    look = bot.look
     durability = bot.main_hand.durability
+
+    while bot.connected?
+      bot.eat!
+      bot.look = look
+      bot.inventory.pick! "diamond_sword"
+      bot.attack
+      bot.wait_ticks 5
+
+      if bot.main_hand.durability < durability
+        puts "Attacked! Durability decreased from #{durability} to #{bot.main_hand.durability}"
+        durability = bot.main_hand.durability
+      end
+    end
+
+    # If we reach here, bot disconnected gracefully
+    puts "Disconnected, retrying in #{retry_delay.total_seconds} seconds..."
+    sleep retry_delay
+    retry_delay = [retry_delay * 2, MAX_RETRY_DELAY].min
+  rescue e
+    # Handle any exceptions (IO errors, connection failures, etc.)
+    puts "Error: #{e.message}, retrying in #{retry_delay.total_seconds} seconds..."
+    sleep retry_delay
+    retry_delay = [retry_delay * 2, MAX_RETRY_DELAY].min
   end
 end
