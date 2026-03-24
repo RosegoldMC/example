@@ -7,9 +7,9 @@ shards:
 
   openssl_ext:
     git: https://github.com/spider-gazelle/openssl_ext.git
-    version: 2.8.3
+    version: 2.8.5
 
   rosegold: # Overridden
     git: https://github.com/rosegoldmc/rosegold.cr.git
-    version: 0.7.0+git.commit.be382aab670ed491de43e791727ee8828655fb8d
+    version: 0.7.0+git.commit.67390a96ce5fc593af2e778e6c1eee76f78fb294
 
