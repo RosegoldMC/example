@@ -1,12 +1,15 @@
 name: rosegold-example
-version: 0.2.0
+version: 0.3.0
+description: Template repository for creating Minecraft bots with Rosegold.cr
 
 authors:
-  - Your Name <your.email@example.com>
+  - Alex Piechowski <alex@piechowski.io>
 
 targets:
   attack:
     main: src/attack.cr
+  afk:
+    main: src/afk.cr
 
 crystal: '>= 1.17.1'
 

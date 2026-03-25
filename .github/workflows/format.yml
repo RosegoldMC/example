@@ -1,4 +1,4 @@
-name: CI
+name: Format
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
 
 jobs:
-  test:
+  format:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,14 +17,5 @@ jobs:
       with:
         crystal: latest
 
-    - name: Install dependencies
-      run: shards install
-
     - name: Check formatting
       run: crystal tool format --check
-
-    - name: Run tests
-      run: crystal spec
-
-    - name: Build
-      run: shards build
