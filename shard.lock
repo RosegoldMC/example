@@ -11,5 +11,5 @@ shards:
 
   rosegold: # Overridden
     git: https://github.com/rosegoldmc/rosegold.cr.git
-    version: 0.7.0+git.commit.67390a96ce5fc593af2e778e6c1eee76f78fb294
+    version: 0.7.0+git.commit.d12859336ec227ca7fab05513052f34f68a92fe7
 
