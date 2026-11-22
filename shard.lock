@@ -7,7 +7,7 @@ shards:
 
   minecraft-data:
     git: https://github.com/rosegoldmc/minecraft-data.cr.git
-    version: 0.1.0
+    version: 0.1.0+git.commit.bdc1033ea023feddea03d0869137a36b70a64a9e
 
   openssl_ext:
     git: https://github.com/spider-gazelle/openssl_ext.git
@@ -15,5 +15,5 @@ shards:
 
   rosegold: # Overridden
     git: https://github.com/rosegoldmc/rosegold.cr.git
-    version: 0.9.0+git.commit.1b631104ae4dc286a5edc90ecb23f4be5997e1ba
+    version: 0.10.0+git.commit.dfebc0c6360c9be6280a31ed6f19b8b3eceae7ed
 
